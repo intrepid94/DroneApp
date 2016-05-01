@@ -91,6 +91,7 @@ public class SettingsActivity extends AppCompatActivity {
                 ip_command = s;
 
                 Intent intent = new Intent();
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra("ip_address_1", ip_address_1);
                 intent.putExtra("ip_address_2", ip_address_2);
                 intent.putExtra("ip_address_3", ip_address_3);

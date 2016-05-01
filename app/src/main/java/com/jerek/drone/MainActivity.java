@@ -40,39 +40,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        SharedPreferences preferences = getSharedPreferences("SAVED_VALUES", MODE_PRIVATE);
-        mIP1 = preferences.getInt("ip_ad1", mIP1);
-        mIP2 = preferences.getInt("ip_ad2", mIP2);
-        mIP3 = preferences.getInt("ip_ad3", mIP3);
-        mIP4 = preferences.getInt("ip_ad4", mIP4);
-        mIPPort = preferences.getInt("ip_port", mIPPort);
-        mIPCommand = preferences.getString("ip_command", mIPCommand);
-
-        StringBuilder sb = new StringBuilder();
-        String sb_http = "http://";
-        String sb_dot = ".";
-        String sb_colon = ":";
-        String sb_slash = "/";
-
-        sb.append(sb_http);
-        sb.append(mIP1);
-        sb.append(sb_dot);
-        sb.append(mIP2);
-        sb.append(sb_dot);
-        sb.append(mIP3);
-        sb.append(sb_dot);
-        sb.append(mIP4);
-        sb.append(sb_colon);
-        sb.append(mIPPort);
-        sb.append(sb_slash);
-        sb.append(mIPCommand);
-        mURL = new String(sb);
+        Log.d(TAG, "onCreate()");
 
         setContentView(R.layout.activity_main);
         mStreamButton = (Button) findViewById(R.id.stream_button);
         mStreamText = (TextView) findViewById(R.id.stream_string);
-        mStreamText.setText(mURL);
+        loadData();
     }
 
     @Override
@@ -104,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case REQUEST_SETTINGS:
+                Log.d(TAG, "onActivityResult()");
                 if (resultCode == Activity.RESULT_OK) {
                     mIP1 = data.getIntExtra("ip_address_1", mIP1);
                     mIP2 = data.getIntExtra("ip_address_2", mIP2);
@@ -123,9 +97,42 @@ public class MainActivity extends AppCompatActivity {
                     editor.putString("ip_command", mIPCommand);
 
                     editor.apply();
+                    loadData();
                 }
             break;
         }
+    }
+
+    public void loadData()
+    {
+        SharedPreferences preferences = getSharedPreferences("SAVED_VALUES", MODE_PRIVATE);
+        mIP1 = preferences.getInt("ip_ad1", mIP1);
+        mIP2 = preferences.getInt("ip_ad2", mIP2);
+        mIP3 = preferences.getInt("ip_ad3", mIP3);
+        mIP4 = preferences.getInt("ip_ad4", mIP4);
+        mIPPort = preferences.getInt("ip_port", mIPPort);
+        mIPCommand = preferences.getString("ip_command", mIPCommand);
+
+        StringBuilder sb = new StringBuilder();
+        String sb_http = "http://";
+        String sb_dot = ".";
+        String sb_colon = ":";
+        String sb_slash = "/";
+
+        sb.append(sb_http);
+        sb.append(mIP1);
+        sb.append(sb_dot);
+        sb.append(mIP2);
+        sb.append(sb_dot);
+        sb.append(mIP3);
+        sb.append(sb_dot);
+        sb.append(mIP4);
+        sb.append(sb_colon);
+        sb.append(mIPPort);
+        sb.append(sb_slash);
+        sb.append(mIPCommand);
+        mURL = new String(sb);
+        mStreamText.setText(mURL);
     }
 }
 
