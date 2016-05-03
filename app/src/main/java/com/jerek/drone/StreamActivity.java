@@ -70,7 +70,7 @@ public class StreamActivity extends AppCompatActivity {
         if (mv != null) {
             mv.setResolution(640, 480);
         }
-        new DoRead().execute("http://plazacam.studentaffairs.duke.edu/mjpg/video.mjpg");
+        new DoRead().execute("mURL");
     }
 
     @Override
