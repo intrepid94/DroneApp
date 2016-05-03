@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.jerek.drone"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest
+  package="com.jerek.drone"
+  xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -17,7 +19,11 @@
         </activity>
         <activity
             android:name=".SettingsActivity"
-            android:label="Settings" >
+            android:label="Settings">
+        </activity>
+        <activity
+            android:name=".StreamActivity"
+            android:label="Stream">
         </activity>
     </application>
 

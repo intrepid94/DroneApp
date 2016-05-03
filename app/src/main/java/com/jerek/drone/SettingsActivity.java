@@ -1,6 +1,7 @@
 package com.jerek.drone;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -33,7 +34,13 @@ public class SettingsActivity extends AppCompatActivity {
             actionBar.setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP, ActionBar.DISPLAY_HOME_AS_UP);
         }
 
-        Bundle extras = getIntent().getExtras();
+        SharedPreferences preferences = getSharedPreferences("SAVED_VALUES", MODE_PRIVATE);
+        ip_address_1 = preferences.getInt("ip_ad1", ip_address_1);
+        ip_address_2 = preferences.getInt("ip_ad2", ip_address_2);
+        ip_address_3 = preferences.getInt("ip_ad3", ip_address_3);
+        ip_address_4 = preferences.getInt("ip_ad4", ip_address_4);
+        ip_port = preferences.getInt("ip_port", ip_port);
+        ip_command = preferences.getString("ip_command", ip_command);
 
         ip_input_1 = (EditText) findViewById(R.id.settings_ip_1);
         ip_input_2 = (EditText) findViewById(R.id.settings_ip_2);
@@ -42,21 +49,13 @@ public class SettingsActivity extends AppCompatActivity {
         port_input = (EditText) findViewById(R.id.settings_port);
         command_input = (EditText) findViewById(R.id.settings_command);
 
-        if(extras != null) {
-            ip_address_1 = extras.getInt("ip_address_1", ip_address_1);
-            ip_address_2 = extras.getInt("ip_address_2", ip_address_2);
-            ip_address_3 = extras.getInt("ip_address_3", ip_address_3);
-            ip_address_4 = extras.getInt("ip_address_4", ip_address_4);
-            ip_port = extras.getInt("ip_port", ip_port);
-            ip_command = extras.getString("ip_command");
 
-            ip_input_1.setText(String.valueOf(ip_address_1));
-            ip_input_2.setText(String.valueOf(ip_address_2));
-            ip_input_3.setText(String.valueOf(ip_address_3));
-            ip_input_4.setText(String.valueOf(ip_address_4));
-            port_input.setText(String.valueOf(ip_port));
-            command_input.setText(String.valueOf(ip_command));
-        }
+        ip_input_1.setText(String.valueOf(ip_address_1));
+        ip_input_2.setText(String.valueOf(ip_address_2));
+        ip_input_3.setText(String.valueOf(ip_address_3));
+        ip_input_4.setText(String.valueOf(ip_address_4));
+        port_input.setText(String.valueOf(ip_port));
+        command_input.setText(String.valueOf(ip_command));
     }
 
     @Override
@@ -90,16 +89,20 @@ public class SettingsActivity extends AppCompatActivity {
                 s = command_input.getText().toString();
                 ip_command = s;
 
-                Intent intent = new Intent();
+                Intent intent = new Intent(this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.putExtra("ip_address_1", ip_address_1);
-                intent.putExtra("ip_address_2", ip_address_2);
-                intent.putExtra("ip_address_3", ip_address_3);
-                intent.putExtra("ip_address_4", ip_address_4);
-                intent.putExtra("ip_port", ip_port);
-                intent.putExtra("ip_command", ip_command);
+                SharedPreferences preferences = getSharedPreferences("SAVED_VALUES", MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
 
-                setResult(RESULT_OK, intent);
+                editor.putInt("ip_ad1", ip_address_1);
+                editor.putInt("ip_ad2", ip_address_2);
+                editor.putInt("ip_ad3", ip_address_3);
+                editor.putInt("ip_ad4", ip_address_4);
+                editor.putInt("ip_port", ip_port);
+                editor.putString("ip_command", ip_command);
+
+                editor.apply();
+                startActivity(intent);
                 finish();
                 return true;
             }
